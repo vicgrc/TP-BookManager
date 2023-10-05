@@ -35,3 +35,5 @@ jobs:
       run: ./gradlew bootJar
     - name: Unit test
       run: ./gradlew test
+    - name: Integration test
+      run: ./gradlew testIntegration

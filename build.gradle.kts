@@ -21,19 +21,37 @@ configurations {
     }
 }
 
+sourceSets {
+    create("testIntegration") {
+        compileClasspath += sourceSets.main.get().output
+        runtimeClasspath += sourceSets.main.get().output
+    }
+}
+
 repositories {
     mavenCentral()
 }
 
+val testIntegrationImplementation: Configuration by configurations.getting {
+    extendsFrom(configurations.implementation.get())
+}
+
+
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-jdbc")
+   // implementation("org.springframework.boot:spring-boot-starter-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.liquibase:liquibase-core")
-    compileOnly("org.projectlombok:lombok")
     runtimeOnly("org.postgresql:postgresql")
-    annotationProcessor("org.projectlombok:lombok")
 
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
+    testImplementation("io.mockk:mockk:1.13.8")
+    testImplementation("com.willowtreeapps.assertk:assertk:0.27.0")
+
+    testIntegrationImplementation("io.mockk:mockk:1.13.8")
+    testIntegrationImplementation("com.ninja-squad:springmockk:4.0.2")
+    testIntegrationImplementation("org.springframework.boot:spring-boot-starter-test") {
+        exclude(module = "mockito-core")
+    }
 }
 
 tasks.withType<KotlinCompile> {
@@ -46,3 +64,10 @@ tasks.withType<KotlinCompile> {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+
+task<Test>("testIntegration") {
+    useJUnitPlatform()
+    testClassesDirs = sourceSets["testIntegration"].output.classesDirs
+    classpath = sourceSets["testIntegration"].runtimeClasspath
+}
+
