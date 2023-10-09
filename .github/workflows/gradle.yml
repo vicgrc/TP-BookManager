@@ -45,7 +45,7 @@ jobs:
       id: jacoco_reporter
       uses: PavanMudigonda/jacoco-reporter@v4.8
       with:
-        coverage_results_path: jacocoFullReport/jacocoFullReport.xml
+        coverage_results_path: build/reports/jacoco/jacocoFullReport/jacocoFullReport.xml
         coverage_report_name: Coverage
         coverage_report_title: JaCoCo
         github_token: ${{ secrets.GITHUB_TOKEN }}
