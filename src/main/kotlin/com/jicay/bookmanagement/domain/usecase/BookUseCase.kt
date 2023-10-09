@@ -1,13 +1,13 @@
 package com.jicay.bookmanagement.domain.usecase
 
 import com.jicay.bookmanagement.domain.model.Book
+import com.jicay.bookmanagement.domain.port.BookPort
 
-class BookUseCase {
+class BookUseCase(
+    private val bookPort: BookPort
+) {
     fun getAllBooks(): List<Book> {
-        return listOf(
-            Book("Les Misérables", "Victor Hugo"),
-            Book("Hamlet", "William Shakespeare")
-        ).sortedBy {
+        return bookPort.getAllBooks().sortedBy {
             it.name.lowercase()
         }
     }

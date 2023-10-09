@@ -38,20 +38,25 @@ val testIntegrationImplementation: Configuration by configurations.getting {
 
 
 dependencies {
-   // implementation("org.springframework.boot:spring-boot-starter-jdbc")
+    implementation("org.springframework.boot:spring-boot-starter-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.liquibase:liquibase-core")
-    runtimeOnly("org.postgresql:postgresql")
+    implementation("org.postgresql:postgresql")
 
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
     testImplementation("io.mockk:mockk:1.13.8")
     testImplementation("com.willowtreeapps.assertk:assertk:0.27.0")
 
     testIntegrationImplementation("io.mockk:mockk:1.13.8")
+    testIntegrationImplementation("com.willowtreeapps.assertk:assertk:0.27.0")
     testIntegrationImplementation("com.ninja-squad:springmockk:4.0.2")
     testIntegrationImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(module = "mockito-core")
     }
+    testIntegrationImplementation("org.testcontainers:postgresql:1.19.1")
+    testIntegrationImplementation("org.testcontainers:junit-jupiter:1.19.1")
+    testIntegrationImplementation("org.testcontainers:jdbc-test:1.12.0")
+    testIntegrationImplementation("org.testcontainers:testcontainers:1.19.1")
 }
 
 tasks.withType<KotlinCompile> {

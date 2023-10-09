@@ -1,13 +1,14 @@
 package com.jicay.bookmanagement.infrastructure.application
 
 import com.jicay.bookmanagement.domain.usecase.BookUseCase
+import com.jicay.bookmanagement.infrastructure.secondary.adapter.BookDAO
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
 class UseCasesConfiguration {
     @Bean
-    fun bookUseCase(): BookUseCase {
-        return BookUseCase()
+    fun bookUseCase(bookDAO: BookDAO): BookUseCase {
+        return BookUseCase(bookDAO)
     }
 }
