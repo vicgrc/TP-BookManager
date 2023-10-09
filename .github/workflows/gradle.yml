@@ -40,6 +40,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - uses: build
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Unit test
@@ -54,6 +55,7 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
+    - uses: test
     - name: Run Coverage
       run: ./gradlew jacocoFullReport
     - name: JaCoCo Code Coverage Report
