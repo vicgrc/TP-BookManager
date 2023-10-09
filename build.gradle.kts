@@ -4,6 +4,7 @@ plugins {
     java
     id("org.springframework.boot") version "3.1.3"
     id("io.spring.dependency-management") version "1.1.3"
+    id("jacoco")
     kotlin("jvm") version "1.8.22"
     kotlin("plugin.spring") version "1.8.22"
 }
@@ -13,6 +14,10 @@ version = "0.0.1-SNAPSHOT"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
+}
+
+jacoco {
+    toolVersion = "0.8.7"
 }
 
 configurations {
@@ -86,6 +91,26 @@ task<Test>("testIntegration") {
     useJUnitPlatform()
     testClassesDirs = sourceSets["testIntegration"].output.classesDirs
     classpath = sourceSets["testIntegration"].runtimeClasspath
+}
+
+tasks.register<JacocoReport>("jacocoIntegrationTestReport") {
+    executionData(tasks.named("testIntegration").get())
+    sourceSets(sourceSets["testIntegration"])
+
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+    }
+}
+
+tasks.register<JacocoReport>("jacocoFullReport") {
+    executionData(tasks.named("test").get(), tasks.named("testIntegration").get())
+    sourceSets(sourceSets["main"])
+
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+    }
 }
 
 task<Test>("testArchitecture") {
