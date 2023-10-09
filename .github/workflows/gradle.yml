@@ -19,7 +19,7 @@ permissions:
 
 jobs:
   build:
-    name: Build
+
     runs-on: ubuntu-latest
 
     steps:
@@ -34,28 +34,12 @@ jobs:
       run: chmod +x gradlew
     - name: Build
       run: ./gradlew bootJar
-  test:
-    name: Tests
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: build
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
     - name: Unit test
       run: ./gradlew test
     - name: Integration test
       run: ./gradlew testIntegration
     - name: Architecture test
       run: ./gradlew testArchitecture
-
-  coverage:
-    name: Coverage
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-    - uses: test
     - name: Run Coverage
       run: ./gradlew jacocoFullReport
     - name: JaCoCo Code Coverage Report
@@ -70,10 +54,13 @@ jobs:
         minimum_coverage: 80
         fail_below_threshold: false
         publish_only_summary: false
+
       # Publish Coverage Job Summary  # Optional
     - name: Add Coverage Job Summary
       run: echo "${{ steps.jacoco_reporter.outputs.coverageSummary }}" >> $GITHUB_STEP_SUMMARY
+
       # uploads the coverage-report.md artifact  # Optional
+
     - name: Upload Code Coverage Artifacts
       uses: actions/upload-artifact@v2
       with:
