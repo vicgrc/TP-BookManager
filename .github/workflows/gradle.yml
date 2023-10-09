@@ -37,3 +37,5 @@ jobs:
       run: ./gradlew test
     - name: Integration test
       run: ./gradlew testIntegration
+    - name: Architecture test
+      run: ./gradlew testArchitecture

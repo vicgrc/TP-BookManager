@@ -26,6 +26,11 @@ sourceSets {
         compileClasspath += sourceSets.main.get().output
         runtimeClasspath += sourceSets.main.get().output
     }
+
+    create("testArchitecture") {
+        compileClasspath += sourceSets.main.get().output
+        runtimeClasspath += sourceSets.main.get().output
+    }
 }
 
 repositories {
@@ -33,6 +38,10 @@ repositories {
 }
 
 val testIntegrationImplementation: Configuration by configurations.getting {
+    extendsFrom(configurations.implementation.get())
+}
+
+val testArchitectureImplementation: Configuration by configurations.getting {
     extendsFrom(configurations.implementation.get())
 }
 
@@ -57,6 +66,9 @@ dependencies {
     testIntegrationImplementation("org.testcontainers:junit-jupiter:1.19.1")
     testIntegrationImplementation("org.testcontainers:jdbc-test:1.12.0")
     testIntegrationImplementation("org.testcontainers:testcontainers:1.19.1")
+
+    testArchitectureImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
+    testArchitectureImplementation("com.tngtech.archunit:archunit-junit5:1.0.1")
 }
 
 tasks.withType<KotlinCompile> {
@@ -74,5 +86,11 @@ task<Test>("testIntegration") {
     useJUnitPlatform()
     testClassesDirs = sourceSets["testIntegration"].output.classesDirs
     classpath = sourceSets["testIntegration"].runtimeClasspath
+}
+
+task<Test>("testArchitecture") {
+    useJUnitPlatform()
+    testClassesDirs = sourceSets["testArchitecture"].output.classesDirs
+    classpath = sourceSets["testArchitecture"].runtimeClasspath
 }
 
