@@ -121,6 +121,7 @@ detekt {
 }
 
 tasks.withType<Detekt>().configureEach {
+    basePath = rootProject.projectDir.absolutePath
     reports {
         xml.required.set(true)
         html.required.set(true)
