@@ -117,6 +117,7 @@ detekt {
     buildUponDefaultConfig = true
     allRules = false
     ignoreFailures = true
+    basePath = rootProject.projectDir.absolutePath
 }
 
 tasks.withType<Detekt>().configureEach {
