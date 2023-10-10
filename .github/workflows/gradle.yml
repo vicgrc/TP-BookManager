@@ -16,6 +16,10 @@ on:
 permissions:
   contents: read
   checks: write
+  # required for all workflows
+  security-events: write
+  # only required for workflows in private repositories
+  actions: read
 
 jobs:
   build:
@@ -89,7 +93,7 @@ jobs:
       # uploads the coverage-report.md artifact  # Optional
 
     - name: Upload Code Coverage Artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: code-coverage-report-markdown
         path: "*/coverage-results.md"
