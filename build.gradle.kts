@@ -1,3 +1,4 @@
+import io.gitlab.arturbosch.detekt.Detekt
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -5,7 +6,8 @@ plugins {
     id("org.springframework.boot") version "3.1.3"
     id("io.spring.dependency-management") version "1.1.3"
     id("jacoco")
-    kotlin("jvm") version "1.8.22"
+    id("io.gitlab.arturbosch.detekt") version("1.23.1")
+    kotlin("jvm") version "1.9.0"
     kotlin("plugin.spring") version "1.8.22"
 }
 
@@ -93,16 +95,6 @@ task<Test>("testIntegration") {
     classpath = sourceSets["testIntegration"].runtimeClasspath
 }
 
-tasks.register<JacocoReport>("jacocoIntegrationTestReport") {
-    executionData(tasks.named("testIntegration").get())
-    sourceSets(sourceSets["testIntegration"])
-
-    reports {
-        xml.required.set(true)
-        html.required.set(true)
-    }
-}
-
 tasks.register<JacocoReport>("jacocoFullReport") {
     executionData(tasks.named("test").get(), tasks.named("testIntegration").get())
     sourceSets(sourceSets["main"])
@@ -119,3 +111,20 @@ task<Test>("testArchitecture") {
     classpath = sourceSets["testArchitecture"].runtimeClasspath
 }
 
+detekt {
+    toolVersion = "1.23.1"
+    config.setFrom("$projectDir/config/detekt.yml")
+    buildUponDefaultConfig = true
+    allRules = false
+    ignoreFailures = true
+}
+
+tasks.withType<Detekt>().configureEach {
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+        txt.required.set(true)
+        sarif.required.set(true)
+        md.required.set(true)
+    }
+}

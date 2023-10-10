@@ -34,12 +34,37 @@ jobs:
       run: chmod +x gradlew
     - name: Build
       run: ./gradlew bootJar
+    - name: Run detekt
+      run: ./gradlew detekt
+    - name: Upload SARIF to GitHub using the upload-sarif action
+      uses: github/codeql-action/upload-sarif@v2
+      if: success() || failure()
+      with:
+        sarif_file: build/reports/detekt/detekt.sarif
     - name: Unit test
       run: ./gradlew test
+    - name: Publish Test
+      uses: EnricoMi/publish-unit-test-result-action@v2
+      if: always()
+      with:
+        files: |
+          build/test-results/test/*.xml
     - name: Integration test
       run: ./gradlew testIntegration
+    - name: Publish Integration test
+      uses: EnricoMi/publish-unit-test-result-action@v2
+      if: always()
+      with:
+        files: |
+          build/test-results/testIntegration/*.xml
     - name: Architecture test
       run: ./gradlew testArchitecture
+    - name: Publish Architecture test
+      uses: EnricoMi/publish-unit-test-result-action@v2
+      if: always()
+      with:
+        files: |
+          build/test-results/testArchitecture/*.xml
     - name: Run Coverage
       run: ./gradlew jacocoFullReport
     - name: JaCoCo Code Coverage Report
