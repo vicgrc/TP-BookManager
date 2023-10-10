@@ -36,6 +36,8 @@ jobs:
       run: ./gradlew bootJar
     - name: Run detekt
       run: ./gradlew detekt
+    - name: ls build/reports/detekt
+      run: ls buid
     - name: Upload SARIF to GitHub using the upload-sarif action
       uses: github/codeql-action/upload-sarif@v2
       if: success() || failure()
