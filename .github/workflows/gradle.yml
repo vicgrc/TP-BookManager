@@ -40,8 +40,8 @@ jobs:
       run: ./gradlew bootJar
     - name: Run detekt
       run: ./gradlew detekt
-    - name: ls build/reports/detekt
-      run: ls build/reports/detekt
+    - name: Publish detekt summary
+      run: cat build/reports/detekt/detekt.md >> $GITHUB_STEP_SUMMARY
     - name: Upload SARIF to GitHub using the upload-sarif action
       uses: github/codeql-action/upload-sarif@v2
       if: success() || failure()
@@ -98,18 +98,3 @@ jobs:
         name: code-coverage-report-markdown
         path: "*/coverage-results.md"
         retention-days: 1
-  qodana:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-      checks: write
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}  # to check out the actual pull request commit, not the merge commit
-          fetch-depth: 0  # a full history is required for pull request analysis
-      - name: 'Qodana Scan'
-        uses: JetBrains/qodana-action@v2023.2
-        env:
-          QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
