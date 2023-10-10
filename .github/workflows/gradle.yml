@@ -23,7 +23,7 @@ permissions:
 
 jobs:
   build:
-
+    name: Build
     runs-on: ubuntu-latest
 
     steps:
@@ -91,7 +91,8 @@ jobs:
       run: echo "${{ steps.jacoco_reporter.outputs.coverageSummary }}" >> $GITHUB_STEP_SUMMARY
 
       # uploads the coverage-report.md artifact  # Optional
-
+    - name: ls
+      run: find . -name coverage-results.md
     - name: Upload Code Coverage Artifacts
       uses: actions/upload-artifact@v3
       with:
