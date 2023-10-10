@@ -93,6 +93,9 @@ jobs:
       # uploads the coverage-report.md artifact  # Optional
     - name: ls
       run: find . -name coverage-results.md
+
+    - name: Publish Coverage Summary
+      run: cat _TMP/coverage-results.md >> $GITHUB_STEP_SUMMARY
     - name: Upload Code Coverage Artifacts
       uses: actions/upload-artifact@v3
       with:
