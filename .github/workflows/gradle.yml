@@ -41,57 +41,57 @@ jobs:
     - name: Upload build
       uses: actions/upload-artifact@v3
       with:
-        name: build-directory
-        path: build
-    - name: Run detekt
-      run: ./gradlew detekt
-    - name: Publish detekt summary
-      run: cat build/reports/detekt/detekt.md >> $GITHUB_STEP_SUMMARY
-    - name: Upload SARIF to GitHub using the upload-sarif action
-      uses: github/codeql-action/upload-sarif@v2
-      if: success() || failure()
-      with:
-        sarif_file: build/reports/detekt/detekt.sarif
-    - name: Unit test
-      run: ./gradlew test
-    - name: Publish Test
-      uses: EnricoMi/publish-unit-test-result-action@v2
-      if: always()
-      with:
-        files: |
-          build/test-results/test/*.xml
-    - name: Integration test
-      run: ./gradlew testIntegration
-    - name: Publish Integration test
-      uses: EnricoMi/publish-unit-test-result-action@v2
-      if: always()
-      with:
-        files: |
-          build/test-results/testIntegration/*.xml
-    - name: Architecture test
-      run: ./gradlew testArchitecture
-    - name: Publish Architecture test
-      uses: EnricoMi/publish-unit-test-result-action@v2
-      if: always()
-      with:
-        files: |
-          build/test-results/testArchitecture/*.xml
-    - name: Run Coverage
-      run: ./gradlew jacocoFullReport
-    - name: JaCoCo Code Coverage Report
-      id: jacoco_reporter
-      uses: PavanMudigonda/jacoco-reporter@v4.8
-      with:
-        coverage_results_path: build/reports/jacoco/jacocoFullReport/jacocoFullReport.xml
-        coverage_report_name: Coverage
-        coverage_report_title: JaCoCo
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        skip_check_run: false
-        minimum_coverage: 80
-        fail_below_threshold: false
-        publish_only_summary: false
-    - name: Publish Coverage Summary
-      run: cat _TMP/coverage-results.md >> $GITHUB_STEP_SUMMARY
+        name: repository
+        path: .
+#    - name: Run detekt
+#      run: ./gradlew detekt
+#    - name: Publish detekt summary
+#      run: cat build/reports/detekt/detekt.md >> $GITHUB_STEP_SUMMARY
+#    - name: Upload SARIF to GitHub using the upload-sarif action
+#      uses: github/codeql-action/upload-sarif@v2
+#      if: success() || failure()
+#      with:
+#        sarif_file: build/reports/detekt/detekt.sarif
+#    - name: Unit test
+#      run: ./gradlew test
+#    - name: Publish Test
+#      uses: EnricoMi/publish-unit-test-result-action@v2
+#      if: always()
+#      with:
+#        files: |
+#          build/test-results/test/*.xml
+#    - name: Integration test
+#      run: ./gradlew testIntegration
+#    - name: Publish Integration test
+#      uses: EnricoMi/publish-unit-test-result-action@v2
+#      if: always()
+#      with:
+#        files: |
+#          build/test-results/testIntegration/*.xml
+#    - name: Architecture test
+#      run: ./gradlew testArchitecture
+#    - name: Publish Architecture test
+#      uses: EnricoMi/publish-unit-test-result-action@v2
+#      if: always()
+#      with:
+#        files: |
+#          build/test-results/testArchitecture/*.xml
+#    - name: Run Coverage
+#      run: ./gradlew jacocoFullReport
+#    - name: JaCoCo Code Coverage Report
+#      id: jacoco_reporter
+#      uses: PavanMudigonda/jacoco-reporter@v4.8
+#      with:
+#        coverage_results_path: build/reports/jacoco/jacocoFullReport/jacocoFullReport.xml
+#        coverage_report_name: Coverage
+#        coverage_report_title: JaCoCo
+#        github_token: ${{ secrets.GITHUB_TOKEN }}
+#        skip_check_run: false
+#        minimum_coverage: 80
+#        fail_below_threshold: false
+#        publish_only_summary: false
+#    - name: Publish Coverage Summary
+#      run: cat _TMP/coverage-results.md >> $GITHUB_STEP_SUMMARY
   test:
     needs: build
 
@@ -109,8 +109,8 @@ jobs:
       run: chmod +x gradlew
     - uses: actions/download-artifact@v3
       with:
-        name: build-directory
-        path: build
+        name: repository
+        path: .
     - name: ls
       run: ls -R
     - name: Unit test
