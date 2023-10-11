@@ -8,6 +8,8 @@ import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
+import io.mockk.justRun
+import io.mockk.verify
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -33,5 +35,16 @@ class BookDTOUseCaseTest {
             Book("Hamlet", "William Shakespeare"),
             Book("Les Misérables", "Victor Hugo")
         )
+    }
+
+    @Test
+    fun `add book`() {
+        justRun { bookPort.createBook(any()) }
+
+        val book = Book("Les Misérables", "Victor Hugo")
+
+        bookUseCase.addBook(book)
+
+        verify(exactly = 1) { bookPort.createBook(book) }
     }
 }

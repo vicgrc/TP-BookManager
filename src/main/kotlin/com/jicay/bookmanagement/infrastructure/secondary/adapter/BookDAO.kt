@@ -19,6 +19,10 @@ class BookDAO(private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate
     }
 
     override fun createBook(book: Book) {
-        TODO("Not yet implemented")
+        namedParameterJdbcTemplate
+            .update("INSERT INTO BOOK (title, author) values (:title, :author)", mapOf(
+                "title" to book.name,
+                "author" to book.author
+            ))
     }
 }
