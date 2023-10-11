@@ -37,12 +37,15 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build
-      run: ./gradlew bootJar
-    - name: Upload classes
+      run: ./gradlew bootJar --no-daemon
+    - name: Upload build
       uses: actions/upload-artifact@v3
       with:
-        name: classes
-        path: build/classes
+        name: build
+        path: | 
+          build/classes
+          build/kotlin
+          build/resources
     - name: Upload .gradle
       uses: actions/upload-artifact@v3
       with:
@@ -104,11 +107,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - name: Download classes
+    - name: Download build
       uses: actions/download-artifact@v3
       with:
-        name: classes
-        path: build/classes
+        name: build
+        path: build
     - name: Download gradle
       uses: actions/download-artifact@v3
       with:
@@ -122,8 +125,6 @@ jobs:
         cache: 'gradle'
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-    - name: ls
-      run: ls -R
     - name: Unit test
       run: ./gradlew test --no-daemon
     - name: Publish Test
