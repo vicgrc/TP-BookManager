@@ -11,4 +11,8 @@ class BookUseCase(
             it.name.lowercase()
         }
     }
+
+    fun addBook(book: Book) {
+        bookPort.createBook(book)
+    }
 }

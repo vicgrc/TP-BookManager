@@ -17,4 +17,8 @@ class BookDAO(private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate
                 )
             }
     }
+
+    override fun createBook(book: Book) {
+        TODO("Not yet implemented")
+    }
 }
