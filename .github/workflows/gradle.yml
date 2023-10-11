@@ -38,11 +38,6 @@ jobs:
       run: chmod +x gradlew
     - name: Build
       run: ./gradlew bootJar
-    - name: Upload build
-      uses: actions/upload-artifact@v3
-      with:
-        name: build-directory
-        path: build
     - name: Run detekt
       run: ./gradlew detekt
     - name: Publish detekt summary
