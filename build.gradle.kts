@@ -1,3 +1,4 @@
+import com.x3t.gradle.plugins.openapi.OpenapiDiffPluginTask
 import io.gitlab.arturbosch.detekt.Detekt
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -9,6 +10,8 @@ plugins {
     id("io.gitlab.arturbosch.detekt") version("1.23.1")
     kotlin("jvm") version "1.9.0"
     kotlin("plugin.spring") version "1.8.22"
+    id("org.springdoc.openapi-gradle-plugin") version "1.7.0"
+    id("com.x3t.gradle.plugins.openapi.openapi_diff") version "1.0"
 }
 
 group = "com.example"
@@ -58,6 +61,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.liquibase:liquibase-core")
     implementation("org.postgresql:postgresql")
+    implementation("org.springdoc:springdoc-openapi-starter-common:2.1.0")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0")
 
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
     testImplementation("io.mockk:mockk:1.13.8")
@@ -130,3 +135,63 @@ tasks.withType<Detekt>().configureEach {
         md.required.set(true)
     }
 }
+
+openApi {
+    apiDocsUrl.set("http://localhost:8080/v3/api-docs.yaml")
+    outputFileName.set("openapi.yaml")
+}
+
+tasks.register<OpenapiDiffPluginTask>("openApiDiff") {
+    originalFile = "docs/openapi.yaml"
+    newFile = "build/openapi.yaml"
+    failOnIncompatible = true
+    htmlReport = true
+    markdownReport = true
+    reportName = "build/OpenapiDiffReport"
+
+    onlyIf {
+        File(originalFile.get()).exists()
+                && File(newFile.get()).exists()
+    }
+}
+
+tasks.register<GradleBuild>("testContract") {
+    tasks = listOf("generateOpenApiDocs", "openApiDiff", "copyOpenApi")
+}
+
+tasks.register<Copy>("copyOpenApi") {
+    dependsOn("generateOpenApiDocs")
+    from(layout.buildDirectory.file("openapi.yaml"))
+    into(layout.projectDirectory.dir("docs"))
+}
+/*
+tasks.register<ContractTestTask>("contractTest") {
+    //tasks.addAll("generateOpenApiDocs", )
+
+    referenceOpenApi.set("docs/openapi.yaml")
+    newOpenApi.set("build/openapi.yaml")
+    onlyIf {
+        File(referenceOpenApi.get()).exists()
+    }
+}
+
+abstract class ContractTestTask : DefaultTask() {
+    @get:Input
+    abstract val referenceOpenApi: Property<String>
+    @get:Input
+    abstract val newOpenApi: Property<String>
+
+    @TaskAction
+    fun greet() {
+        //openApi.exectu
+       // openApi
+      //  tasks.named("generateOpenApiDocs")
+        val referenceOpenApi = File(referenceOpenApi.get())
+        val newOpenApi = File(newOpenApi.get())
+        if (referenceOpenApi.exists()) {
+            println("hello from GreetingTask exists")
+        }
+        newOpenApi.copyTo(referenceOpenApi, overwrite = true)
+        println("hello from GreetingTask")
+    }
+}*/
