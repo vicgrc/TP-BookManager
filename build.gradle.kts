@@ -164,34 +164,3 @@ tasks.register<Copy>("copyOpenApi") {
     from(layout.buildDirectory.file("openapi.yaml"))
     into(layout.projectDirectory.dir("docs"))
 }
-/*
-tasks.register<ContractTestTask>("contractTest") {
-    //tasks.addAll("generateOpenApiDocs", )
-
-    referenceOpenApi.set("docs/openapi.yaml")
-    newOpenApi.set("build/openapi.yaml")
-    onlyIf {
-        File(referenceOpenApi.get()).exists()
-    }
-}
-
-abstract class ContractTestTask : DefaultTask() {
-    @get:Input
-    abstract val referenceOpenApi: Property<String>
-    @get:Input
-    abstract val newOpenApi: Property<String>
-
-    @TaskAction
-    fun greet() {
-        //openApi.exectu
-       // openApi
-      //  tasks.named("generateOpenApiDocs")
-        val referenceOpenApi = File(referenceOpenApi.get())
-        val newOpenApi = File(newOpenApi.get())
-        if (referenceOpenApi.exists()) {
-            println("hello from GreetingTask exists")
-        }
-        newOpenApi.copyTo(referenceOpenApi, overwrite = true)
-        println("hello from GreetingTask")
-    }
-}*/

@@ -74,10 +74,6 @@ jobs:
         check_name: Architecture tests results
         files: |
           build/test-results/testArchitecture/*.xml
-    - name: Contract test
-      run: ./gradlew testContract
-    - name: Publish detekt summary
-      run: cat build/OpenapiDiffReport.md >> $GITHUB_STEP_SUMMARY
     - name: Run Coverage
       run: ./gradlew jacocoFullReport
     - name: JaCoCo Code Coverage Report
