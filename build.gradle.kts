@@ -41,6 +41,11 @@ sourceSets {
         compileClasspath += sourceSets.main.get().output
         runtimeClasspath += sourceSets.main.get().output
     }
+
+    create("testComponent") {
+        compileClasspath += sourceSets.main.get().output
+        runtimeClasspath += sourceSets.main.get().output
+    }
 }
 
 repositories {
@@ -52,6 +57,10 @@ val testIntegrationImplementation: Configuration by configurations.getting {
 }
 
 val testArchitectureImplementation: Configuration by configurations.getting {
+    extendsFrom(configurations.implementation.get())
+}
+
+val testComponentImplementation: Configuration by configurations.getting {
     extendsFrom(configurations.implementation.get())
 }
 
@@ -81,6 +90,21 @@ dependencies {
 
     testArchitectureImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
     testArchitectureImplementation("com.tngtech.archunit:archunit-junit5:1.0.1")
+
+
+    testComponentImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
+    testComponentImplementation("org.springframework.boot:spring-boot-starter-test") {
+        exclude(module = "mockito-core")
+    }
+    testComponentImplementation("io.cucumber:cucumber-java:7.14.0")
+    testComponentImplementation("io.cucumber:cucumber-spring:7.14.0")
+    testComponentImplementation("io.cucumber:cucumber-junit:7.14.0")
+    testComponentImplementation("io.cucumber:cucumber-junit-platform-engine:7.14.0")
+    testComponentImplementation("io.rest-assured:rest-assured:5.3.2")
+    testComponentImplementation("org.junit.platform:junit-platform-suite:1.10.0")
+    testComponentImplementation("org.testcontainers:postgresql:1.19.1")
+    testComponentImplementation("org.testcontainers:junit-jupiter:1.19.1")
+    testComponentImplementation("com.willowtreeapps.assertk:assertk:0.27.0")
 }
 
 tasks.withType<KotlinCompile> {
@@ -101,7 +125,7 @@ task<Test>("testIntegration") {
 }
 
 tasks.register<JacocoReport>("jacocoFullReport") {
-    executionData(tasks.named("test").get(), tasks.named("testIntegration").get())
+    executionData(tasks.named("test").get(), tasks.named("testIntegration").get(), tasks.named("testComponent").get())
     sourceSets(sourceSets["main"])
 
     reports {
@@ -114,6 +138,12 @@ task<Test>("testArchitecture") {
     useJUnitPlatform()
     testClassesDirs = sourceSets["testArchitecture"].output.classesDirs
     classpath = sourceSets["testArchitecture"].runtimeClasspath
+}
+
+task<Test>("testComponent") {
+    useJUnitPlatform()
+    testClassesDirs = sourceSets["testComponent"].output.classesDirs
+    classpath = sourceSets["testComponent"].runtimeClasspath
 }
 
 detekt {

@@ -76,4 +76,25 @@ class BookControllerIT {
 
         verify(exactly = 1) { bookUseCase.addBook(expected) }
     }
+
+    @Test
+    fun `rest route post book should return 400 when body is not good`() {
+        justRun { bookUseCase.addBook(any()) }
+
+        mockMvc.post("/books") {
+            // language=json
+            content = """
+                {
+                  "title": "Les misérables",
+                  "author": "Victor Hugo"
+                }
+            """.trimIndent()
+            contentType = APPLICATION_JSON
+            accept = APPLICATION_JSON
+        }.andExpect {
+            status { isBadRequest() }
+        }
+
+        verify(exactly = 0) { bookUseCase.addBook(any()) }
+    }
 }
