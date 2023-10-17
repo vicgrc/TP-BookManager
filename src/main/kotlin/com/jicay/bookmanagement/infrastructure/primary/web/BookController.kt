@@ -11,13 +11,14 @@ import org.springframework.web.bind.annotation.*
 class BookController(
     private val bookUseCase: BookUseCase
 ) {
-
+    @CrossOrigin
     @GetMapping
     fun getAllBooks(): List<BookDTO> {
         return bookUseCase.getAllBooks()
             .map { it.toDto() }
     }
 
+    @CrossOrigin
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun addBook(@RequestBody bookDTO: BookDTO) {
