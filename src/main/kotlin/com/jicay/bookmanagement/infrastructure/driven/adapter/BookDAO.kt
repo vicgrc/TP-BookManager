@@ -1,4 +1,4 @@
-package com.jicay.bookmanagement.infrastructure.secondary.adapter
+package com.jicay.bookmanagement.infrastructure.driven.adapter
 
 import com.jicay.bookmanagement.domain.model.Book
 import com.jicay.bookmanagement.domain.port.BookPort

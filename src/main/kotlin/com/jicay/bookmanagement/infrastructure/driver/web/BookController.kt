@@ -1,8 +1,8 @@
-package com.jicay.bookmanagement.infrastructure.primary.web
+package com.jicay.bookmanagement.infrastructure.driver.web
 
 import com.jicay.bookmanagement.domain.usecase.BookUseCase
-import com.jicay.bookmanagement.infrastructure.primary.web.dto.BookDTO
-import com.jicay.bookmanagement.infrastructure.primary.web.dto.toDto
+import com.jicay.bookmanagement.infrastructure.driver.web.dto.BookDTO
+import com.jicay.bookmanagement.infrastructure.driver.web.dto.toDto
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 

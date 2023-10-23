@@ -1,4 +1,4 @@
-package com.jicay.bookmanagement.infrastructure.primary.web
+package com.jicay.bookmanagement.infrastructure.driver.web
 
 import com.jicay.bookmanagement.domain.model.Book
 import com.jicay.bookmanagement.domain.usecase.BookUseCase

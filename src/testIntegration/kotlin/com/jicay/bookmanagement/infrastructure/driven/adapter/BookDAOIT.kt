@@ -1,4 +1,4 @@
-package com.jicay.bookmanagement.infrastructure.secondary.adapter
+package com.jicay.bookmanagement.infrastructure.driven.adapter
 
 import assertk.assertThat
 import assertk.assertions.containsExactlyInAnyOrder
