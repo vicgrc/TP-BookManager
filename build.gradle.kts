@@ -12,6 +12,7 @@ plugins {
     kotlin("plugin.spring") version "1.8.22"
     id("org.springdoc.openapi-gradle-plugin") version "1.7.0"
     id("com.x3t.gradle.plugins.openapi.openapi_diff") version "1.0"
+    id("info.solidsoft.pitest") version "1.15.0"
 }
 
 group = "com.example"
@@ -76,6 +77,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
     testImplementation("io.mockk:mockk:1.13.8")
     testImplementation("com.willowtreeapps.assertk:assertk:0.27.0")
+    testImplementation("info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.15.0")
 
     testIntegrationImplementation("io.mockk:mockk:1.13.8")
     testIntegrationImplementation("com.willowtreeapps.assertk:assertk:0.27.0")
@@ -87,6 +89,7 @@ dependencies {
     testIntegrationImplementation("org.testcontainers:junit-jupiter:1.19.1")
     testIntegrationImplementation("org.testcontainers:jdbc-test:1.12.0")
     testIntegrationImplementation("org.testcontainers:testcontainers:1.19.1")
+    testIntegrationImplementation("info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.15.0")
 
     testArchitectureImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
     testArchitectureImplementation("com.tngtech.archunit:archunit-junit5:1.0.1")
@@ -105,6 +108,7 @@ dependencies {
     testComponentImplementation("org.testcontainers:postgresql:1.19.1")
     testComponentImplementation("org.testcontainers:junit-jupiter:1.19.1")
     testComponentImplementation("com.willowtreeapps.assertk:assertk:0.27.0")
+    testComponentImplementation("info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.15.0")
 }
 
 tasks.withType<KotlinCompile> {
@@ -164,6 +168,18 @@ tasks.withType<Detekt>().configureEach {
         sarif.required.set(true)
         md.required.set(true)
     }
+}
+
+pitest {
+    targetClasses.add("com.jicay.bookmanagement.*")
+    junit5PluginVersion = "1.0.0"
+    avoidCallsTo.set(setOf("kotlin.jvm.internal"))
+    mutators.set(setOf("STRONGER"))
+    threads.set(Runtime.getRuntime().availableProcessors())
+    testSourceSets.addAll(sourceSets["test"], sourceSets["testIntegration"])
+    mainSourceSets.addAll(sourceSets["main"])
+    outputFormats.addAll("XML", "HTML")
+    excludedClasses.add("**BookManagementApplication")
 }
 
 openApi {
