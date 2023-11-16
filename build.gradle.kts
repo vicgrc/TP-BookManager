@@ -15,7 +15,7 @@ plugins {
     id("info.solidsoft.pitest") version "1.15.0"
 }
 
-group = "com.example"
+group = "com.jicay"
 version = "0.0.1-SNAPSHOT"
 
 java {
