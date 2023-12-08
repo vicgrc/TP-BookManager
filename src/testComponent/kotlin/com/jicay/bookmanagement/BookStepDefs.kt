@@ -23,8 +23,8 @@ class BookStepDefs {
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails()
     }
 
-    @When("the user creates the book {string} written by {string}")
-    fun createBook(title: String, author: String) {
+    @When("the user creates the book {string} written by {string} and book reservation is {boolean}")
+    fun createBook(title: String, author: String, reserved: Boolean) {
         given()
             .contentType(ContentType.JSON)
             .and()
@@ -32,7 +32,8 @@ class BookStepDefs {
                 """
                     {
                       "name": "$title",
-                      "author": "$author"
+                      "author": "$author",
+                      "reserved": $reserved
                     }
                 """.trimIndent()
             )
@@ -57,7 +58,7 @@ class BookStepDefs {
             """
                 ${
                     line.entries.joinToString(separator = ",", prefix = "{", postfix = "}") {
-                        """"${it.key}": "${it.value}""""
+                        """"${it.key}": ${if (it.key == "reserved") it.value.toString() else "\"${it.value}\""}"""
                     }
                 }
             """.trimIndent()
